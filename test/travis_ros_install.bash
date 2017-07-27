@@ -8,7 +8,7 @@ pip install rospkg
 
 #ros install
 cd ..
-git clone http://github.com/ryuichiueda/ros_setup_scripts_Ubuntu14.04_server.git
+git clone http://github.com/makototakeuchi0/ros_setup_scripts_Ubuntu14.04_server.git
 cd ./ros_setup_scripts_Ubuntu14.04_server
 bash ./setup0.bash
 bash ./setup1.bash
