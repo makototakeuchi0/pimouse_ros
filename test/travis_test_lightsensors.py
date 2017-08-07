@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #encoding: utf8
-import inittest, rostest
+import unittest, rostest
 import rosnode, rospy
 import time
 from pimouse_ros.msg import LightSensorValues
@@ -8,10 +8,10 @@ from pimouse_ros.msg import LightSensorValues
 class LightsensorTest(unittest.TestCase):
     def setUp(self):
         self.count = 0
-        rospy.subscriber('/lightsensors', LightSensorValues, self.callback)
+        rospy.Subscriber('/lightsensors', LightSensorValues, self.callback)
         self.values = LightSensorValues()
 
-    def callback(self.data):
+    def callback(self,data):
         self.count += 1
         self.values =data
 
@@ -28,10 +28,10 @@ class LightsensorTest(unittest.TestCase):
         nodes = rosnode.get_node_names()
         self.assertIn('/lightsensors',nodes, "node does not exist")
 
-    def test _get_value(self):
+    def test_get_value(self):
         rospy.set_param('lightsensors_freq',10)
         time.sleep(2)
-        with open("/dev/rtlightsensors0","w") as f:
+        with open("/dev/rtlightsensor0","w") as f:
             f.write("-1 0 123 4321\n")
 
         time.sleep(3)
@@ -42,7 +42,7 @@ class LightsensorTest(unittest.TestCase):
     def test_change_parameter(self):
         rospy.set_param('lightsensors_freq',1)
         time.sleep(2)
-        cprev = self.count
+        c_prev = self.count
         time.sleep(3)
         ###コールバック関数が３秒間で最低１回、最高でも４回しか呼ばれていないことを確認###
         self.assertTrue(self.count < c_prev + 4,"freq does not change")
@@ -51,4 +51,4 @@ class LightsensorTest(unittest.TestCase):
 if __name__ == '__main__':
     time.sleep(3)
     rospy.init_node('travis_test_lightsensors')
-    rostest.rosrun('pimouse_ros','travis_test_lightsensors',LightSensorTest)
+    rostest.rosrun('pimouse_ros','travis_test_lightsensors',LightsensorTest)
