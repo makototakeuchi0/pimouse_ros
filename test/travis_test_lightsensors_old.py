@@ -4,16 +4,16 @@ import unittest, rostest
 import rosnode, rospy
 import time
 from pimouse_ros.msg import LightSensorValues
-        
+
 class LightsensorTest(unittest.TestCase):
     def setUp(self):
         self.count = 0
         rospy.Subscriber('/lightsensors', LightSensorValues, self.callback)
         self.values = LightSensorValues()
-        
+
     def callback(self,data):
         self.count += 1
-        self.values = data
+        self.values =data
 
     def check_values(self,lf,ls,rs,rf):
         vs = self.values
@@ -29,27 +29,26 @@ class LightsensorTest(unittest.TestCase):
         self.assertIn('/lightsensors',nodes, "node does not exist")
 
     def test_get_value(self):
-        rospy.set_param('lightsensors_freq',10)    #センサの値取得の周期を10Hzに
-        time.sleep(2)                              #パラメータの反映を待つ
-        with open("/dev/rtlightsensor0","w") as f: #ダミーの値をダミーのファイルに
+        rospy.set_param('lightsensors_freq',10)
+        time.sleep(2)
+        with open("/dev/rtlightsensor0","w") as f:
             f.write("-1 0 123 4321\n")
 
         time.sleep(3)
-        ###コールバック関数が最低1回は呼ばれ、値が取得できているかを確認###
-        self.assertFalse(self.count == 0,"cannot subscribe the topic") 
-        self.check_values(4321,123,0,-1) 
+        ###コールバック関数が最低１回は呼ばれ、値が獲得できているかを確認###
+        self.assertFalse(self.count == 0,"cannot subscribe the topic")
+        self.check_values(4321,123,0,-1)
 
     def test_change_parameter(self):
-        rospy.set_param('lightsensors_freq',1)    #センサの値取得の周期を1Hzに
-        time.sleep(2)                             #反映を待つ
-        c_prev = self.count                       #callbackが呼ばれた回数を記録
-        time.sleep(3) 
-        ###コールバック関数が3秒間で最低1回、最高でも4回しか呼ばれてないことを確認###
+        rospy.set_param('lightsensors_freq',1)
+        time.sleep(2)
+        c_prev = self.count
+        time.sleep(3)
+        ###コールバック関数が３秒間で最低１回、最高でも４回しか呼ばれていないことを確認###
         self.assertTrue(self.count < c_prev + 4,"freq does not change")
         self.assertFalse(self.count == c_prev,"subscriber is stopped")
 
 if __name__ == '__main__':
     time.sleep(3)
     rospy.init_node('travis_test_lightsensors')
-rostest.rosrun('pimouse_ros','travis_test_lightsensors',LightsensorTest)
-
+    rostest.rosrun('pimouse_ros','travis_test_lightsensors',LightsensorTest)
