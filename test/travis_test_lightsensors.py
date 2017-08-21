@@ -4,13 +4,13 @@ import unittest, rostest
 import rosnode, rospy
 import time
 from pimouse_ros.msg import LightSensorValues
-        
+
 class LightsensorTest(unittest.TestCase):
     def setUp(self):
         self.count = 0
         rospy.Subscriber('/lightsensors', LightSensorValues, self.callback)
         self.values = LightSensorValues()
-        
+
     def callback(self,data):
         self.count += 1
         self.values = data
@@ -43,7 +43,7 @@ class LightsensorTest(unittest.TestCase):
         rospy.set_param('lightsensors_freq',1)    #センサの値取得の周期を1Hzに
         time.sleep(2)                             #反映を待つ
         c_prev = self.count                       #callbackが呼ばれた回数を記録
-        time.sleep(3) 
+        time.sleep(3)
         ###コールバック関数が3秒間で最低1回、最高でも4回しか呼ばれてないことを確認###
         self.assertTrue(self.count < c_prev + 4,"freq does not change")
         self.assertFalse(self.count == c_prev,"subscriber is stopped")
