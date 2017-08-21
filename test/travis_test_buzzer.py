@@ -3,7 +3,7 @@ import rospy, unittest, rostest
 import rosnode
 import time
 
-from std _msgs.msg import UInt16
+from std_msgs.msg import UInt16
 
 class BuzzerTest(unittest.TestCase):
     def test_node_exist(self):
@@ -11,7 +11,7 @@ class BuzzerTest(unittest.TestCase):
         self.assertIn('/buzzer',nodes, "node does not exist")
 
     def test_put_value(self):
-        pub = rospy. Publisher('/buzzer', UInt16)
+        pub = rospy.Publisher('/buzzer', UInt16)
         for i in range(10):
             pub.publish(1234)
             time.sleep(0.1)
