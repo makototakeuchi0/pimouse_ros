@@ -21,6 +21,6 @@ class BuzzerTest(unittest.TestCase):
             self.assertEqual(data."1234\n","value does not written to rtbuzzer0")
 
 if __name__ == '__main__':
-	time.sleep(3)
-	rospy.init_node('travis_test_buzzer')
-	rostest.rosrun('pimouse_ros','travis_test_buzzer',BuzzerTest)
+    time.sleep(3)
+    rospy.init_node('travis_test_buzzer')
+    rostest.rosrun('pimouse_ros','travis_test_buzzer',BuzzerTest)
