@@ -2,7 +2,6 @@
 import rospy, unittest, rostest
 import rosnode
 import time
-
 from std_msgs.msg import UInt16
 
 class BuzzerTest(unittest.TestCase):
